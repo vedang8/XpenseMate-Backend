@@ -3,6 +3,7 @@ using ExpenseTracker.Models.DTO;
 using ExpenseTracker.Models.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExpenseTracker.Controllers
@@ -20,7 +21,6 @@ namespace ExpenseTracker.Controllers
         }
 
         // POST: api/users/register
-        [EnableCors("CorsPolicy")]
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(RegisterUserDto registerUserDto)
         {
@@ -44,6 +44,33 @@ namespace ExpenseTracker.Controllers
 
             return Ok("User is registered successfully");
            // return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<User>> Login(LoginUserDto loginUserDto)
+        {
+            if(string.IsNullOrWhiteSpace(loginUserDto.Name) || string.IsNullOrWhiteSpace(loginUserDto.Password))
+            {
+                return BadRequest("");
+            }
+
+            var user = _context.Users.SingleOrDefault(u => u.Name == loginUserDto.Name);
+            if ((user == null) || (loginUserDto.Password != user.Password))
+            {
+                return Unauthorized("Invalid username or password");
+            }
+
+            // create session
+            HttpContext.Session.SetString("UserId", user.Id.ToString());
+            return Ok("User logged in successfully");
+
+        }
+
+        [HttpPost("logout")]
+        public ActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return Ok("User logged out successfully");
         }
     }
 }
