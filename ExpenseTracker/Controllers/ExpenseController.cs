@@ -3,6 +3,7 @@ using ExpenseTracker.Models.DTO;
 using ExpenseTracker.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Controllers
 {
@@ -16,6 +17,17 @@ namespace ExpenseTracker.Controllers
         {
             _context = context;
         }
+
+        // GET: api/expenses
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
+        {
+            var expenses = await _context.Expenses
+                .Include(e => e.Category)
+                .ToListAsync();
+            return Ok(expenses);
+        }
+
         // POST: api/expenses/add
         [HttpPost("add")]
         public async Task<ActionResult<Expense>> AddExpense(AddExpenseDto addExpenseDto)
@@ -36,7 +48,48 @@ namespace ExpenseTracker.Controllers
                 UserId = userId
             };
 
+            _context.Expenses.Add(expense);
+            await _context.SaveChangesAsync();
+
             return Ok("Expense added successfully");
-        } 
+        }
+
+        // PUT: api/expenses/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditExpense(int id, EditExpenseDto editExpenseDto)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            expense.Name = editExpenseDto.Name;
+            expense.Description = editExpenseDto.Description;
+            expense.Amount = editExpenseDto.Amount;
+            expense.Date = editExpenseDto.Date;
+            expense.CategoryId = editExpenseDto.CategoryId;
+
+            _context.Entry(expense).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok("Expense edited successfully");
+        }
+
+        // DELETE: api/expenses/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            _context.Expenses.Remove(expense);
+            await _context.SaveChangesAsync();
+
+            return Ok("Expense deleted successfully");
+        }
     }
 }
