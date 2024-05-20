@@ -47,11 +47,11 @@ namespace ExpenseTracker.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<User>> Login(LoginUserDto loginUserDto)
+        public ActionResult<User> Login(LoginUserDto loginUserDto)
         {
-            if(string.IsNullOrWhiteSpace(loginUserDto.Name) || string.IsNullOrWhiteSpace(loginUserDto.Password))
+            if (string.IsNullOrWhiteSpace(loginUserDto.Name) || string.IsNullOrWhiteSpace(loginUserDto.Password))
             {
-                return BadRequest("");
+                return BadRequest("Please provide proper details");
             }
 
             var user = _context.Users.SingleOrDefault(u => u.Name == loginUserDto.Name);
