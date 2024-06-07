@@ -21,12 +21,16 @@ namespace ExpenseTracker.Data
 
             // Seed predefined categories
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Food" },
-                new Category { Id = 2, Name = "Transport" },
-                new Category { Id = 3, Name = "Entertainment" },
-                new Category { Id = 4, Name = "Utilities" },
-                new Category { Id = 5, Name = "Health" },
-                new Category { Id = 6, Name = "Other" }
+                new Category { Id = 1, Name = "Food", Emoji = "🍔"},
+                new Category { Id = 2, Name = "Personal Care" , Emoji = "😉"},
+                new Category { Id = 3, Name = "Entertainment", Emoji = "🎬" },
+                new Category { Id = 4, Name = "Shopping", Emoji = "🛍️"},
+                new Category { Id = 5, Name = "Medical", Emoji = "🩺" },
+                new Category { Id = 6, Name = "Transportation", Emoji = "🚋" },
+                new Category { Id = 7, Name = "Rent", Emoji = "🏠" },
+                new Category { Id = 8, Name = "Fuel", Emoji = "⛽" },
+                new Category { Id = 9, Name = "Grocery", Emoji = "🫛" },
+                new Category { Id = 10, Name = "Others", Emoji = "📦" }
             );
 
             modelBuilder.Entity<Expense>()

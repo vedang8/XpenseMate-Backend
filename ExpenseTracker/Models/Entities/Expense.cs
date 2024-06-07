@@ -1,4 +1,6 @@
-﻿namespace ExpenseTracker.Models.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace ExpenseTracker.Models.Entities
 {
     public class Expense
     {
@@ -14,10 +16,12 @@
 
         public int CategoryId { get; set; }
 
+        [JsonIgnore]
         public Category Category { get; set; }
 
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; }
     }
 }
