@@ -71,10 +71,6 @@
 4. View detailed analytics and charts to gain insights into your spending habits.
 5. Check your daily and monthly total expenses to stay on top of your budget.
 
-## 🤝 Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
 ## 🙏 Acknowledgements
 
 - [ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-5.0)
